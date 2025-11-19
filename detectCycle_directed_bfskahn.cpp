@@ -38,3 +38,7 @@ class Solution {
         //agr count same matlab we hv visited every node and no cycle detected--->hence false
     }
 };
+
+
+
+//follow up--------> leetcode course schedule and course schedule 2
