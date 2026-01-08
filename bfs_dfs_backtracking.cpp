@@ -34,3 +34,31 @@ public://using bfs
         return res;
     }
 };
+
+// --------------------------------------------------------------------------------------------------------------------------------
+class Solution {
+public://using dfs
+    int m,n;
+    vector<vector<int>>directions{{1,0},{-1,0},{0,1},{0,-1}};
+    int dfs(vector<vector<int>>&grid,int i,int j){
+        if(i<0||i>=m||j<0||j>=n||grid[i][j]==0)return 0;
+        int cnt=1;
+        grid[i][j]=0;
+        for(auto &dir:directions){
+            cnt+=dfs(grid,i+dir[0],j+dir[1]);
+        }
+        return cnt;
+    }
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        m=grid.size();
+        n=grid[0].size();
+        int res=0;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j]==0)continue;
+                res=max(res,dfs(grid,i,j));
+            }
+        }
+        return res;
+    }
+};
