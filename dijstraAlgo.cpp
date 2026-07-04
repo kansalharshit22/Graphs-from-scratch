@@ -36,3 +36,39 @@ public:
         return dist;
     }
 };
+//-----------------------------------------------//
+// using set->erase old val in set avoid unnecessary processing
+class Solution {
+  public:
+    vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
+        // Code here
+        unordered_map<int,vector<pair<int,int>>>adj;
+        for(auto &e:edges){
+            adj[e[0]].push_back({e[1],e[2]});
+            adj[e[1]].push_back({e[0],e[2]});
+        }
+        
+        vector<int>res(V,INT_MAX);
+        set<pair<int,int>>st;
+        res[src]=0;
+        st.insert({0,src});//distance,node
+        
+        while(!st.empty()){
+            auto &it=*st.begin();
+            int node=it.second;
+            int d=it.first;
+            st.erase(it);
+            
+            for(auto &vec:adj[node]){
+                
+                if(d+vec.second<res[vec.first]){
+                    if(res[vec.first]!=INT_MAX)st.erase({res[vec.first],vec.first});
+                
+                    res[vec.first]=d+vec.second;
+                    st.insert({d+vec.second,vec.first});
+                }
+            }
+        }
+        return res;
+    }
+};
