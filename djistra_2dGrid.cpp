@@ -38,4 +38,4 @@ public:
         return ans==INT_MAX?-1:ans;
     }
 };
-
+//follow up as unoform weights can be done using standarad queue
