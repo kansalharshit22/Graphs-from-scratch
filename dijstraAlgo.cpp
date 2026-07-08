@@ -72,3 +72,40 @@ class Solution {
         return res;
     }
 };
+
+//--------------------------------------------------------------------------------------//
+//using queue in case of uniform constant edge weights
+class Solution {
+  public:
+    int shortestPath(int V, vector<vector<int>> &edges, int src, int dest) {
+        // code here
+        unordered_map<int,vector<int>>adj;
+        for(auto &e:edges){
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
+        }
+        
+        vector<int>res(V,INT_MAX);
+        typedef pair<int,int> P;
+        
+        queue<P>pq;
+        pq.push({0,src});
+        res[src]=0;
+        
+        while(!pq.empty()){
+           P t=pq.front();
+           int v=t.second;
+           int dist=t.first;
+           
+           pq.pop();
+           
+           for(auto &u:adj[v]){
+               if(dist+1<res[u]){
+                   pq.push({dist+1,u});
+                   res[u]=dist+1;
+               }
+           }
+        }
+        return res[dest]==INT_MAX?-1:res[dest];// if no wat to reach dest return -1
+    }
+};
