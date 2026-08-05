@@ -39,3 +39,47 @@ public:
     }
 };
 //follow up as unoform weights can be done using standarad queue
+
+//3341 min time to reach last room
+class Solution {
+public:
+    vector<vector<int>>directions{{0,1},{1,0},{-1,0},{0,-1}};
+    int minTimeToReach(vector<vector<int>>& moveTime) {
+        int n=moveTime.size();
+        int m=moveTime[0].size();
+
+        vector<vector<int>>time(n,vector<int>(m,INT_MAX));//result vector
+        time[0][0]=0;
+
+        typedef pair<int,pair<int,int>> p;
+        priority_queue< p, vector<p>, greater<p>>pq;//min heap
+        
+        pq.push({0,{0,0}});//start node
+
+        while(!pq.empty()){
+            int curr=pq.top().first;
+            auto [i,j]=pq.top().second;
+            pq.pop();
+
+            if(i==n-1&& j==m-1)return curr;//we reach destination
+            
+            //finding time to mve to adacent cell
+            for(auto &dir:directions){
+                int i_=i+dir[0];
+                int j_=j+dir[1];
+
+                if(i_<0||i_>=n||j_<0||j_>=m)continue;
+                
+                int newtime=(moveTime[i_][j_]>curr)?moveTime[i_][j_]+1:curr+1;
+                
+                if(newtime>=time[i_][j_])continue;//do not upadte
+
+                time[i_][j_]=newtime;
+                pq.push({newtime,{i_,j_}});
+            }
+
+        }
+
+        return -1;
+    }
+};
